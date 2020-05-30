@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
+
+// themes - our custom or/and out of the box themes
+@import 'themes';
+
+// framework component themes (styles tied to theme variables)
+@import '~@nebular/theme/styles/globals';
+@import '~@nebular/auth/styles/all';
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/grid';
+
+// loading progress bar theme
+@import './pace.theme';
+
+@import './layout';
+@import './overrides';
+
+// install the framework and custom global styles
+@include nb-install() {
+  // framework global styles
+  @include nb-theme-global();
+  @include nb-auth-global();
+
+  @include ngx-layout();
+  // loading progress bar
+  @include ngx-pace-theme();
+
+  @include nb-overrides();
+}
+
+$shorthands: (0, 1, 2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 30, 32, 36, 40, 44, 50, 60, 64, 128, 160, 192, 256, 270, 300);
+
+@each $i in $shorthands {
+  .m#{$i} {
+    margin: #{$i}px !important;
+  }
+  .mt#{$i} {
+    margin-top: #{$i}px !important;
+  }
+  .mb#{$i} {
+    margin-bottom: #{$i}px !important;
+  }
+  .ml#{$i} {
+    margin-left: #{$i}px !important;
+  }
+  .mr#{$i} {
+    margin-right: #{$i}px !important;
+  }
+  .mx#{$i} {
+    margin-right: #{$i}px !important;
+    margin-left: #{$i}px !important;
+  }
+  .my#{$i} {
+    margin-top: #{$i}px !important;
+    margin-bottom: #{$i}px !important;
+  }
+
+  .p#{$i} {
+    padding: #{$i}px !important;
+  }
+  .pt#{$i} {
+    padding-top: #{$i}px !important;
+  }
+  .pb#{$i} {
+    padding-bottom: #{$i}px !important;
+  }
+  .pl#{$i} {
+    padding-left: #{$i}px !important;
+  }
+  .pr#{$i} {
+    padding-right: #{$i}px !important;
+  }
+  .px#{$i} {
+    padding-right: #{$i}px !important;
+    padding-left: #{$i}px !important;
+  }
+  .py#{$i} {
+    padding-top: #{$i}px !important;
+    padding-bottom: #{$i}px !important;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.screen-height {
+  height: 100%;
+}
+
+.standard-margin {
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+.form-groups {
+  padding: 20px;
+  padding-left: 60px;
+  padding-right: 60px;
+  border-radius: 20px;
+  border: 2px solid #9498df;
+}
+
+.form-input-group {
+  border: 1px solid #9498df;
+  border-radius: 5px;
+  padding: 25px;
+}
+
+.login_btn {
+  color: black;
+  background-color: #ffc312;
+  width: 100px;
+}
+
+.content ul li::before {
+  margin-left: -1em;
+}
+
+.content {
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 40px;
+  .sub-content {
+    padding-bottom: 15px;
+  }
+  .free-trial {
+    color: #43425d;
+    font-weight: 800;
+  }
+}
+
+.has-error {
+  border-color: red;
+}
+
+.form-error {
+  font-size: 12px;
+  color: red;
+}
+
+.total-size {
+  font-size: 14px;
+}
+
+@media screen and (min-width: 1024px) {
+  /*Style*/
+}
+
+/*###Tablet(medium)###*/
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /*Style*/
+}
+
+@media screen and (min-width: 0) and (max-width: 768px) {
+  /*Style*/
+  .standard-margin {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .form-groups {
+    padding: 20px;
+  }
+
+  .form-input-group {
+    padding: 5px;
+  }
+  .content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
