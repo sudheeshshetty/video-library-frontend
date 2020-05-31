@@ -16,5 +16,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Disliked Videos',
     icon: 'arrow-circle-down-outline',
     link: '/pages/disliked',
+  },
+  {
+    title: 'Upload',
+    icon: 'cloud-upload-outline',
+    link: '/pages/upload',
   }
 ];

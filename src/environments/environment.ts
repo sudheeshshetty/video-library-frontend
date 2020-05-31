@@ -10,4 +10,6 @@
 
 export const environment = {
   production: false,
+  accessKeyId: 'AKIA5OWE4EF5BKLBZUFP',
+  secretAccessKey: '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'
 };

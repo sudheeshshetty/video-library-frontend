@@ -1,0 +1,42 @@
+<form>
+    <!-- <div class="form-group">
+
+        <input type="email" class="form-control" id="title" formControlName='title'>
+        <div *ngIf="submitted && f.title.errors.required" class="error">
+            Please provide a title!
+        </div>
+    </div> -->
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input [class.has-error]="(title.touched && title.invalid) || error.name" [(ngModel)]="data.name" id="title"
+            name="title" type="text" class="form-control form-input-group" required minlength="3" #title="ngModel">
+        <div *ngIf="(title.invalid && (title.dirty || title.touched)) || error.name">
+            <div *ngIf="title.errors.required" class="form-error">
+                Please provide a title!
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control form-input-group" id="description" rows="3" [(ngModel)]="data.description"
+            name="description"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="thumbnail">Select Thumbnail</label>
+        <input type="file" accept="image/*" class="form-control-file" (change)="selectImage($event)" id="thumbnail">
+    </div>
+    <div class="form-group">
+        <label for="video">Select Video</label>
+        <input type="file" accept="video/*" class="form-control-file" (change)="selectFile($event)" id="video">
+        <div *ngIf="error.url" class="error">
+            You dint select any video!
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+</form>
+
+<!-- <label class="btn btn-default">
+    <input type="file" (change)="selectFile($event)">
+  </label>
+  
+  <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button> -->

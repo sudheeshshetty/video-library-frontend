@@ -1,5 +1,12 @@
 <div class="row">
-  <nb-card>
-    <nb-card-body>Hello from ngx-admin sandbox project.</nb-card-body>
-  </nb-card>
+  <div *ngFor="let video of data" class="col-12 col-md-3">
+    <div (click)="onClick(video.id)">
+      <div class="card video-card">
+        <img [src]="video.thumbnail" class="card-img-top" alt="img">
+        <div class="card-body">
+          <h5 class="card-title">{{video.name}}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

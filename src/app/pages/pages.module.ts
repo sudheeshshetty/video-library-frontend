@@ -7,6 +7,9 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { LikedModule } from './liked/liked.module';
 import { DislikedModule } from './disliked/disliked.module';
+import { ProfileModule } from './profile/profile.module';
+import { UploadModule } from './upload/upload.module';
+import { VideoDetailsModule } from './video-details/video-details.module';
 
 @NgModule({
   imports: [
@@ -15,7 +18,10 @@ import { DislikedModule } from './disliked/disliked.module';
     NbMenuModule,
     DashboardModule,
     LikedModule,
-    DislikedModule
+    DislikedModule,
+    ProfileModule,
+    UploadModule,
+    VideoDetailsModule
   ],
   declarations: [
     PagesComponent,
