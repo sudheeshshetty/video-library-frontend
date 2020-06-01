@@ -3,6 +3,8 @@ import { environment } from '../../../environments/environment';
 import * as AWS from 'aws-sdk/global';
 import * as S3 from 'aws-sdk/clients/s3';
 import { UploadService } from './upload.service';
+import { format } from 'path';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'ngx-upload',
@@ -24,6 +26,8 @@ export class UploadComponent implements OnInit {
     thumbnail: false,
     text: ''
   }
+  uploadForm: NgForm;
+  successtext = ''
   thumbnailProgress = 0
   videoProgress = 0
 
@@ -33,8 +37,9 @@ export class UploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    console.log(this.data.name)
+  onSubmit(form) {
+    this.uploadForm = form
+    this.successtext = '';
     if (!this.data.name) {
       this.error.name = true
     }
@@ -89,7 +94,6 @@ export class UploadComponent implements OnInit {
     //   return true;
     // });
     bucket.upload(params).on('httpUploadProgress', (evt) => {
-      console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
       if (bucketName == 'video-angular-bucket') {
         this.videoProgress = Math.floor((evt.loaded * 100) / evt.total);
       } else {
@@ -105,6 +109,7 @@ export class UploadComponent implements OnInit {
       if (bucketName == 'video-angular-bucket') {
         this.data.url = s3data.Location
         this.uploadservice.postVideos(this.data).subscribe((uploadedData) => {
+          this.successtext = 'Video Uploaded Successfully';
           this.resetData();
         })
       } else {
@@ -115,11 +120,18 @@ export class UploadComponent implements OnInit {
   }
 
   resetData() {
+    this.uploadForm.reset();
     this.data = {
       name: '',
       description: '',
       url: '',
       thumbnail: false
+    }
+    this.error = {
+      name: false,
+      url: false,
+      thumbnail: false,
+      text: ''
     }
     this.videoProgress = 0;
     this.thumbnailProgress = 0;

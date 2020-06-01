@@ -17,7 +17,6 @@ export class LikedComponent implements OnInit {
 
   ngOnInit(): void {
     this.likedService.getVideos().subscribe((data) => {
-      console.log(data)
       this.data = data;
     })
   }

@@ -41,7 +41,7 @@
                 <div class="text-center">
                     <!-- <button class="btn btn-primary mr-1">Register</button> -->
                     <button class="btn text-center btn-primary mr-1 cbtn">
-                        <ng-container *ngIf="submitted; else elseTemplate">
+                        <ng-container *ngIf="signupStatus; else elseTemplate">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         </ng-container>
                         <ng-template #elseTemplate>

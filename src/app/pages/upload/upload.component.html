@@ -1,7 +1,10 @@
 <div *ngIf="error.text" class="text-center">
     <p class="error">{{error.text}}</p>
 </div>
-<form>
+<div *ngIf="successtext" class="text-center">
+    <p class="success">{{successtext}}</p>
+</div>
+<form #uploadForm='ngForm'>
     <div class="form-group">
         <label for="title">Title</label>
         <input [class.has-error]="(title.touched && title.invalid) || error.name" [(ngModel)]="data.name" id="title"
@@ -21,7 +24,8 @@
         <label for="thumbnail">Select Thumbnail</label>
         <input type="file" accept="image/*" class="form-control-file" (change)="selectImage($event)" id="thumbnail">
         <div *ngIf="thumbnailProgress>0">
-            <nb-progress-bar [value]="thumbnailProgress"  size="tiny" [displayValue]="true" status="primary"></nb-progress-bar>
+            <nb-progress-bar [value]="thumbnailProgress" size="tiny" [displayValue]="true" status="primary">
+            </nb-progress-bar>
         </div>
     </div>
     <div class="form-group">
@@ -31,8 +35,9 @@
             You dint select any video!
         </div>
         <div *ngIf="videoProgress>0">
-            <nb-progress-bar [value]="videoProgress"  size="tiny" [displayValue]="true" status="primary"></nb-progress-bar>
+            <nb-progress-bar [value]="videoProgress" size="tiny" [displayValue]="true" status="primary">
+            </nb-progress-bar>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit(uploadForm);">Submit</button>
 </form>

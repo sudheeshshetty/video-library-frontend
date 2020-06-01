@@ -23,43 +23,57 @@ export class VideoDetailsComponent implements OnInit {
     this.iconsLibrary.registerFontPack('far', { packClass: 'far', iconClassPrefix: 'fa' });
   }
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    localStorage.removeItem('like');
+    localStorage.removeItem('dislike');
+  }
+
   ngOnInit(): void {
     this.videoid = this.activatedroute.snapshot.params.id
     this.videoDetailsService.getVideoDetails(this.videoid).subscribe((data: any) => {
       this.data = data
     })
-    this.videoDetailsService.getLikes(this.videoid).subscribe((data: any) => {
-      if (data[0]) {
-        this.like = data[0].selected;
-        localStorage.setItem('like', JSON.stringify(data[0]))
-      }
-    }, (err) => {
+    if (localStorage.getItem('accesstoken')) {
+      this.videoDetailsService.getLikes(this.videoid).subscribe((data: any) => {
+        if (data[0]) {
+          this.like = data[0].selected;
+          localStorage.setItem('like', JSON.stringify(data[0]))
+        }
+      }, (err) => {
 
-    })
-    this.videoDetailsService.getDisLikes(this.videoid).subscribe((data: any) => {
-      if (data[0]) {
-        this.dislike = data[0].selected;
-        localStorage.setItem('dislike', JSON.stringify(data[0]))
-      }
-    }, (err) => {
+      })
+      this.videoDetailsService.getDisLikes(this.videoid).subscribe((data: any) => {
+        if (data[0]) {
+          this.dislike = data[0].selected;
+          localStorage.setItem('dislike', JSON.stringify(data[0]))
+        }
+      }, (err) => {
 
-    })
+      })
+    }
   }
 
   onlike() {
     let token = localStorage.getItem('accesstoken')
     if (!token) {
-      console.log(token)
       localStorage.setItem('page', '/pages/details')
       localStorage.setItem('param', this.videoid)
       this.router.navigate(['/auth/login']);
     } else {
       this.like = !this.like;
       if (this.dislike && this.like) {
+        this.data.totaldislikes -= 1;
         this.dislike = !this.dislike;
         this.videoDetailsService.revertDislike(this.videoid).subscribe((data) => {
           localStorage.setItem('dislike', JSON.stringify(data))
         });
+      }
+      if (!this.like) {
+        this.data.totallikes -= 1;
+      } else {
+        this.data.totallikes += 1;
       }
       this.videoDetailsService.revertlike(this.videoid).subscribe((data) => {
         localStorage.setItem('like', JSON.stringify(data))
@@ -76,11 +90,18 @@ export class VideoDetailsComponent implements OnInit {
     } else {
       this.dislike = !this.dislike
       if (this.like && this.dislike) {
+        this.data.totallikes -= 1;
         this.like = !this.like;
         this.videoDetailsService.revertlike(this.videoid).subscribe((data) => {
           localStorage.setItem('like', JSON.stringify(data))
         });
       }
+      if (!this.dislike) {
+        this.data.totaldislikes -= 1;
+      } else {
+        this.data.totaldislikes += 1;
+      }
+
       this.videoDetailsService.revertDislike(this.videoid).subscribe((data) => {
         localStorage.setItem('dislike', JSON.stringify(data))
       })

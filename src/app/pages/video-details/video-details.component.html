@@ -20,6 +20,9 @@
                             <nb-icon icon="thumbs-up" pack="far"></nb-icon>
                         </ng-template>
                     </div>
+                    <div>
+                        {{data.totallikes}}
+                    </div>
                 </div>
                 <div class="col-sm-2 col-md-1">
                     <div (click)='ondislike()'>
@@ -29,6 +32,9 @@
                         <ng-template #elseTemplatedislike>
                             <nb-icon icon="thumbs-down" pack="far"></nb-icon>
                         </ng-template>
+                    </div>
+                    <div>
+                        {{data.totaldislikes}}
                     </div>
                 </div>
             </div>

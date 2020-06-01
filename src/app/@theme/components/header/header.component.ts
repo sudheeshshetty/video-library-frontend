@@ -44,6 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (bag.item.data.id === 'logout') {
           this.headerService.userLogout();
           this.router.navigate(['/pages']);
+          this.user = { name: 'John Doe' }
         }
       });
   }
@@ -52,7 +53,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.currentTheme = this.themeService.currentTheme;
 
     this.user = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : { name: 'John Doe' }
-    console.log(this.user)
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()

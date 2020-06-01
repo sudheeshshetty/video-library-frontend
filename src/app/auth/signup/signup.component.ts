@@ -38,21 +38,25 @@ export class SignupComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.signupStatus = true;
     this.errorText = ''
     // stop here if form is invalid
     if (this.registerForm.invalid) {
+      this.signupStatus = false;
       return;
     }
     var data = { ...this.registerForm.value }
     delete data.confirmPassword
     this.signupService.signUp(data).subscribe((data) => {
       this.submitted = false;
+      this.signupStatus = false;
       this.router.navigate(['/auth/login']);
     },
       (err) => {
         console.log(err)
         if (err.status == 422) {
           this.submitted = false;
+          this.signupStatus = false;
           this.errorText = 'Duplicate Email'
         }
       })

@@ -9,22 +9,26 @@ export class VideoDetailsService {
 
   constructor(private http: HttpClient) { }
 
-  token = localStorage.getItem('accesstoken');
-  userId = JSON.parse(localStorage.getItem('userDetails')) ? JSON.parse(localStorage.getItem('userDetails')).id : undefined
 
   getVideoDetails(id) {
     return this.http.get(`${environment.baseUrl}/api/videos/${id}`);
   }
 
   getLikes(id) {
-    return this.http.get(`${environment.baseUrl}/api/likes?filter[where][userId]=${this.userId}&filter[where][videoId]=${id}&access_token=${this.token}`);
+    let token = localStorage.getItem('accesstoken');
+    let userId = JSON.parse(localStorage.getItem('userDetails')) ? JSON.parse(localStorage.getItem('userDetails')).id : undefined
+    return this.http.get(`${environment.baseUrl}/api/likes?filter={"where":{"and":[{"userId":"${userId}"},{"videoId":"${id}"}]}}&access_token=${token}`);
   }
 
   getDisLikes(id) {
-    return this.http.get(`${environment.baseUrl}/api/dislikes?filter[where][userId]=${this.userId}&filter[where][videoId]=${id}&access_token=${this.token}`);
+    let token = localStorage.getItem('accesstoken');
+    let userId = JSON.parse(localStorage.getItem('userDetails')) ? JSON.parse(localStorage.getItem('userDetails')).id : undefined
+    return this.http.get(`${environment.baseUrl}/api/dislikes?filter={"where":{"and":[{"userId":"${userId}"},{"videoId":"${id}"}]}}&access_token=${token}`);
   }
 
   revertlike(id) {
+    let token = localStorage.getItem('accesstoken');
+    let userId = JSON.parse(localStorage.getItem('userDetails')) ? JSON.parse(localStorage.getItem('userDetails')).id : undefined
     let like = JSON.parse(localStorage.getItem('like'))
     let url = `${environment.baseUrl}/api/likes`
     if (like) {
@@ -32,16 +36,17 @@ export class VideoDetailsService {
       url = `${environment.baseUrl}/api/likes/${like.id}`
     } else {
       like = {
-        userId: this.userId,
+        userId: userId,
         videoId: id,
         selected: true
       }
     }
-    console.log(like, url)
     return this.http.put(url, like)
   }
 
   revertDislike(id) {
+    let token = localStorage.getItem('accesstoken');
+    let userId = JSON.parse(localStorage.getItem('userDetails')) ? JSON.parse(localStorage.getItem('userDetails')).id : undefined
     let dislike = JSON.parse(localStorage.getItem('dislike'))
     let url = `${environment.baseUrl}/api/dislikes`
     if (dislike) {
@@ -49,12 +54,11 @@ export class VideoDetailsService {
       url = `${environment.baseUrl}/api/dislikes/${dislike.id}`
     } else {
       dislike = {
-        userId: this.userId,
+        userId: userId,
         videoId: id,
         selected: true
       }
     }
-    console.log(dislike, url)
     return this.http.put(url, dislike)
   }
 }
