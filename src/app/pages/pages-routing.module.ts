@@ -20,10 +20,12 @@ const routes: Routes = [{
     },
     {
       path: 'liked',
+      canActivate: [AuthGuardService],
       component: LikedComponent
     },
     {
       path: 'disliked',
+      canActivate: [AuthGuardService],
       component: DislikedComponent
     },
     {

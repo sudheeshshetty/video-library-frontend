@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DislikedService } from './disliked.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-disliked',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DislikedComponent implements OnInit {
 
-  constructor() { }
+  data: any = [];
+  constructor(
+    private dislikedService: DislikedService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.dislikedService.getVideos().subscribe((data) => {
+      console.log(data)
+      this.data = data;
+    })
+  }
+
+  onClick(id) {
+    this.router.navigate(['/pages/details', id]);
   }
 
 }

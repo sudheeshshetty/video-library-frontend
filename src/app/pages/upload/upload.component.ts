@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import * as AWS from 'aws-sdk/global';
 import * as S3 from 'aws-sdk/clients/s3';
+import { UploadService } from './upload.service';
 
 @Component({
   selector: 'ngx-upload',
@@ -20,11 +21,14 @@ export class UploadComponent implements OnInit {
   error = {
     name: false,
     url: false,
-    thumbnail: false
+    thumbnail: false,
+    text: ''
   }
+  thumbnailProgress = 0
+  videoProgress = 0
 
 
-  constructor() { }
+  constructor(private uploadservice: UploadService) { }
 
   ngOnInit(): void {
   }
@@ -39,10 +43,10 @@ export class UploadComponent implements OnInit {
     }
     if (this.selectedImage) {
       let image = this.selectedImage.item(0);
-      this.videouploads3(image);
+      this.videouploads3(image, 'image-angular-bucket');
     }
     let file = this.selectedFiles.item(0);
-    this.videouploads3(file);
+    this.videouploads3(file, 'video-angular-bucket');
   }
 
   selectFile(event) {
@@ -52,7 +56,7 @@ export class UploadComponent implements OnInit {
     this.selectedImage = event.target.files;
   }
 
-  videouploads3(file) {
+  videouploads3(file, bucketName) {
     const contentType = file.type;
     const bucket = new S3(
       {
@@ -62,20 +66,63 @@ export class UploadComponent implements OnInit {
       }
     );
     const params = {
-      Bucket: 'video-angular-bucket',
+      Bucket: bucketName,
       Key: file.name,
       Body: file,
       ACL: 'public-read',
       ContentType: contentType
     };
-    bucket.upload(params, function (err, data) {
+    // bucket.upload(params, (err, data) => {
+    //   if (err) {
+    //     this.error.text = 'There was an error uploading your file. Please try later';
+    //     // console.log('There was an error uploading your file: ', err);
+    //     return false;
+    //   }
+    //   this.error.text = ''
+    //   console.log('Successfully uploaded file.', data);
+    //   if (bucketName == 'video-angular-bucket') {
+    //     this.data.url = data.Location
+    //     // this.uploadservice.
+    //   } else {
+    //     this.data.thumbnail = data.Location
+    //   }
+    //   return true;
+    // });
+    bucket.upload(params).on('httpUploadProgress', (evt) => {
+      console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
+      if (bucketName == 'video-angular-bucket') {
+        this.videoProgress = Math.floor((evt.loaded * 100) / evt.total);
+      } else {
+        this.thumbnailProgress = Math.floor((evt.loaded * 100) / evt.total);
+      }
+    }).send((err, s3data) => {
+      this.error.text = '';
       if (err) {
-        console.log('There was an error uploading your file: ', err);
+        this.resetData();
+        this.error.text = 'There was an error uploading your file. Please try later';
         return false;
       }
-      console.log('Successfully uploaded file.', data);
+      if (bucketName == 'video-angular-bucket') {
+        this.data.url = s3data.Location
+        this.uploadservice.postVideos(this.data).subscribe((uploadedData) => {
+          this.resetData();
+        })
+      } else {
+        this.data.thumbnail = s3data.Location
+      }
       return true;
     });
+  }
+
+  resetData() {
+    this.data = {
+      name: '',
+      description: '',
+      url: '',
+      thumbnail: false
+    }
+    this.videoProgress = 0;
+    this.thumbnailProgress = 0;
   }
 
 }

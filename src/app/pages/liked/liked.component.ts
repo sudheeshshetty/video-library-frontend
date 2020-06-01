@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LikedService } from './liked.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-liked',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LikedComponent implements OnInit {
 
-  constructor() { }
+  data: any = [];
+  constructor(
+    private likedService: LikedService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.likedService.getVideos().subscribe((data) => {
+      console.log(data)
+      this.data = data;
+    })
   }
+
+  onClick(id) {
+    this.router.navigate(['/pages/details', id]);
+  }
+
 
 }

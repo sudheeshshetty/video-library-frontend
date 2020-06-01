@@ -1,1 +1,18 @@
-<p>disliked works!</p>
+<ng-container *ngIf="data.length>0; else elseTemplate">
+    <div class="row">
+        <div *ngFor="let video of data" class="col-12 col-md-3">
+            <div (click)="onClick(video.video.id)">
+                <div class="card video-card">
+                    <img [src]="video.video.thumbnail" class="card-img-top" alt="img">
+                    <div class="card-body">
+                        <h5 class="card-title">{{video.video.name}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-container>
+<ng-template #elseTemplate>
+    <p>You do not have any Disliked videos</p>
+</ng-template>

@@ -10,6 +10,7 @@
 
 export const environment = {
   production: false,
+  baseUrl: 'http://localhost:3000',
   accessKeyId: 'AKIA5OWE4EF5BKLBZUFP',
   secretAccessKey: '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'
 };

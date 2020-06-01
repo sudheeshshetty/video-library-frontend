@@ -1,11 +1,7 @@
+<div *ngIf="error.text" class="text-center">
+    <p class="error">{{error.text}}</p>
+</div>
 <form>
-    <!-- <div class="form-group">
-
-        <input type="email" class="form-control" id="title" formControlName='title'>
-        <div *ngIf="submitted && f.title.errors.required" class="error">
-            Please provide a title!
-        </div>
-    </div> -->
     <div class="form-group">
         <label for="title">Title</label>
         <input [class.has-error]="(title.touched && title.invalid) || error.name" [(ngModel)]="data.name" id="title"
@@ -24,6 +20,9 @@
     <div class="form-group">
         <label for="thumbnail">Select Thumbnail</label>
         <input type="file" accept="image/*" class="form-control-file" (change)="selectImage($event)" id="thumbnail">
+        <div *ngIf="thumbnailProgress>0">
+            <nb-progress-bar [value]="thumbnailProgress"  size="tiny" [displayValue]="true" status="primary"></nb-progress-bar>
+        </div>
     </div>
     <div class="form-group">
         <label for="video">Select Video</label>
@@ -31,12 +30,9 @@
         <div *ngIf="error.url" class="error">
             You dint select any video!
         </div>
+        <div *ngIf="videoProgress>0">
+            <nb-progress-bar [value]="videoProgress"  size="tiny" [displayValue]="true" status="primary"></nb-progress-bar>
+        </div>
     </div>
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">Submit</button>
 </form>
-
-<!-- <label class="btn btn-default">
-    <input type="file" (change)="selectFile($event)">
-  </label>
-  
-  <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button> -->
